@@ -16,30 +16,26 @@ import androidx.room.Room
 import com.example.myapplication.dao.CrimeReportDao
 import com.example.myapplication.dao.RoleDao
 import com.example.myapplication.dao.UserDao
+import com.example.myapplication.entities.User
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+            super.onCreate(savedInstanceState)
 
-        val db = Room.databaseBuilder(
-            applicationContext,
-            MyDatabase::class.java, "database-name"
-        ).build()
+            val db = Room.databaseBuilder(
+                applicationContext,
+                MyDatabase::class.java, "MyDatabase"
+            ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
 
-        val userDao: UserDao = db.userDao()
-        val roleDao: RoleDao = db.roleDao()
-        val crimeReportDao: CrimeReportDao = db.crimeReportDao()
+            val userDao: UserDao = db.userDao()
 
-        setContent {
-            MyApplicationTheme {
+            val newUser = User(1,"USer1","12345678","user@example.com",1,1,false);
+            userDao.insertUser(newUser)
+
+            setContent {
                 // Your Compose UI code here
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Text(text = "Hello World!")
-                }
             }
         }
-    }
+
 }
